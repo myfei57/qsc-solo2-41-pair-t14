@@ -9,9 +9,8 @@ from tankfarm.clock import LogicalClock
 from tankfarm.event import Event, EventBus
 from tankfarm.event.topics import AUDITED_TOPICS
 from tankfarm.ids import IdFactory
+from tankfarm.judgement.filters import SUBJECT_KEYS
 from tankfarm.store.repository import Repository
-
-_SUBJECT_KEYS = ("tank_id", "valve_id", "pump_id", "batch_id", "latch", "subject")
 
 
 @dataclass(frozen=True)
@@ -94,7 +93,7 @@ class AuditLog:
     def _on_event(self, event: Event) -> None:
         payload = event.value if isinstance(event.value, Mapping) else {}
         subject = ""
-        for key in _SUBJECT_KEYS:
+        for key in SUBJECT_KEYS:
             value = payload.get(key)
             if isinstance(value, str) and value:
                 subject = value
