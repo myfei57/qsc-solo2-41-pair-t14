@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping
 
+SUBJECT_KEYS = ("tank_id", "valve_id", "pump_id", "batch_id", "latch", "subject")
+
 
 @dataclass(frozen=True)
 class Record:
@@ -15,6 +17,15 @@ class Record:
     kind: str
     payload: Mapping[str, Any]
     ts: int
+
+    @property
+    def subject(self) -> str:
+        """Equipment the record acts on, derived from its payload."""
+        for key in SUBJECT_KEYS:
+            value = self.payload.get(key)
+            if isinstance(value, str) and value:
+                return value
+        return ""
 
     def as_payload(self) -> dict[str, Any]:
         return {

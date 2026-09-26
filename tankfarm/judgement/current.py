@@ -32,7 +32,8 @@ class CurrentView:
         }
 
     def differences(self, history: Mapping[str, Any]) -> dict[str, Any]:
-        pairs = (
+        pairs: tuple[tuple[str, Any], ...] = (
+            ("valves", dict(self.valve_positions)),
             ("stage", self.stage),
         )
         report: dict[str, Any] = {}
